@@ -614,6 +614,7 @@ fbq('track', 'ViewContent', {content_name: 'SentryLock Steering Wheel Lock', cur
     } catch (err){
       status.textContent = "Couldn't submit automatically — please WhatsApp your order to +234 800 000 0000 instead.";
       status.className = 'form-status err';
+      window.location.href = 'thank-you.html';
     }
   });
 
