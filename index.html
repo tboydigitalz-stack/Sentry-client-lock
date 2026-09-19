@@ -135,9 +135,10 @@
         <p class="text-slate-300 text-sm md:text-base leading-relaxed max-w-3xl mb-6">
           This questionnaire is designed to confirm the business, operational, payment, KYC, compliance, and product requirements for <strong>KRABIT</strong> before the final product specification, prototype, technical architecture, development budget, and implementation plan are prepared.
         </p>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-slate-800 text-xs text-slate-400">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 pt-4 border-t border-slate-800 text-xs text-slate-400">
           <div><strong class="text-emerald-400">✓ In-Memory Delivery:</strong> Instant email, zero DB retention</div>
           <div><strong class="text-emerald-400">✓ Real-Time Auto-Save:</strong> Never loses filled answers</div>
+          <div><strong class="text-emerald-400">🎙️ Voice Input:</strong> Tap mic to speak answers</div>
           <div><strong class="text-emerald-400">✓ Complete:</strong> All 24 Sections & 89 Questions</div>
         </div>
       </div>
@@ -2846,6 +2847,141 @@
         submitBtn.innerHTML = '<span>Transmit Formal Requirements Document</span>';
       }
     }
+
+    // --- Native Speech-to-Text / Audio Input Engine ---
+    let activeRecognition = null;
+    let activeTargetInput = null;
+    let activeVoiceBtn = null;
+
+    function initVoiceInput() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const isSupported = Boolean(SpeechRecognition);
+
+      // Decorate all textarea and text inputs with a sleek mic button
+      const textFields = form.querySelectorAll('textarea, input[type="text"]:not([readonly])');
+      textFields.forEach(field => {
+        if (field.dataset.voiceAttached) return;
+        field.dataset.voiceAttached = 'true';
+
+        // Find the closest label or wrapper
+        const parent = field.parentElement;
+        const label = parent ? parent.querySelector('label') : null;
+
+        const micBtn = document.createElement('button');
+        micBtn.type = 'button';
+        micBtn.className = 'voice-mic-btn inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-emerald-400 text-[11px] border border-slate-700/80 transition ml-2 align-middle cursor-pointer no-print';
+        micBtn.title = isSupported ? 'Speak your answer (Voice Dictation)' : 'Speech-to-text supported in Chrome, Edge, Safari';
+        micBtn.innerHTML = `
+          <svg class="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+          </svg>
+          <span>Voice</span>
+        `;
+
+        micBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          toggleVoiceDictation(field, micBtn);
+        });
+
+        if (label) {
+          label.appendChild(micBtn);
+        } else if (parent) {
+          parent.insertBefore(micBtn, field);
+        }
+      });
+    }
+
+    function toggleVoiceDictation(targetInput, btn) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert('Voice input (Speech-to-Text) is supported natively in Google Chrome, Microsoft Edge, Safari, and mobile browsers (iOS / Android). Please try opening this page in Chrome, Edge, or Safari.');
+        return;
+      }
+
+      // If already recording this exact field, stop
+      if (activeRecognition && activeTargetInput === targetInput) {
+        activeRecognition.stop();
+        return;
+      }
+
+      // If recording another field, stop the previous one first
+      if (activeRecognition) {
+        activeRecognition.stop();
+      }
+
+      try {
+        const recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+
+        activeRecognition = recognition;
+        activeTargetInput = targetInput;
+        activeVoiceBtn = btn;
+
+        btn.className = 'voice-mic-btn inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-rose-500/20 text-rose-300 border border-rose-500/60 animate-pulse text-[11px] font-bold ml-2 align-middle cursor-pointer no-print';
+        btn.innerHTML = `
+          <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+          <span>Listening... (Tap to stop)</span>
+        `;
+
+        let existingText = targetInput.value ? targetInput.value.trim() + ' ' : '';
+        let sessionFinal = '';
+
+        recognition.onresult = (event) => {
+          let interim = '';
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const transcript = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+              sessionFinal += transcript + ' ';
+            } else {
+              interim += transcript;
+            }
+          }
+          targetInput.value = (existingText + sessionFinal + interim).trim();
+          targetInput.dispatchEvent(new Event('input', { bubbles: true }));
+        };
+
+        recognition.onerror = (event) => {
+          console.warn('Speech recognition status:', event.error);
+          if (event.error === 'not-allowed') {
+            alert('Microphone permission was denied. Please allow microphone access in your browser address bar to use voice dictation.');
+          }
+          resetVoiceBtn(btn);
+        };
+
+        recognition.onend = () => {
+          resetVoiceBtn(btn);
+          activeRecognition = null;
+          activeTargetInput = null;
+          activeVoiceBtn = null;
+          saveFormData();
+        };
+
+        recognition.start();
+        targetInput.focus();
+
+      } catch (err) {
+        console.error('Speech recognition exception:', err);
+        resetVoiceBtn(btn);
+      }
+    }
+
+    function resetVoiceBtn(btn) {
+      if (btn) {
+        btn.className = 'voice-mic-btn inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-emerald-400 text-[11px] border border-slate-700/80 transition ml-2 align-middle cursor-pointer no-print';
+        btn.innerHTML = `
+          <svg class="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+          </svg>
+          <span>Voice</span>
+        `;
+      }
+    }
+
+    // Initialize voice buttons on load
+    window.addEventListener('DOMContentLoaded', initVoiceInput);
+    initVoiceInput();
   </script>
 </body>
 </html>
