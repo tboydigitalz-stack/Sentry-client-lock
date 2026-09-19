@@ -50,23 +50,6 @@
         page-break-inside: avoid;
         margin-bottom: 18px;
       }
-      .print-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 6px;
-        font-size: 9pt;
-      }
-      .print-table th, .print-table td {
-        border: 1px solid #cbd5e1;
-        padding: 5px 8px;
-        text-align: left;
-        vertical-align: top;
-      }
-      .print-table th {
-        background-color: #f1f5f9 !important;
-        font-weight: 700;
-        color: #0f172a !important;
-      }
       @page {
         size: A4 portrait;
         margin: 8mm;
@@ -2493,7 +2476,7 @@
         </div>
         <h3 class="text-2xl font-extrabold text-white">Requirements Transmitted!</h3>
         <p class="text-slate-300 text-sm leading-relaxed">
-          The complete KRABIT specification across all 24 sections has been compiled, attached as a document, and emailed directly to developer <strong>Erioluwa Daniel</strong>.
+          The complete KRABIT specification across all 24 sections has been compiled with all questions, descriptions, and answers, attached as a document, and emailed directly to developer <strong>Erioluwa Daniel</strong>.
         </p>
         <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-400 font-mono">
           ✓ Zero-Database Guarantee: In-memory pipeline dispatched and memory wiped.
@@ -2585,8 +2568,8 @@
   const SECTIONS_METADATA = [{"num":1,"title":"SECTION 1 — BUSINESS & PRODUCT","items":[{"id":"q1","title":"1. Legal entity","desc":"What legal entity will own and operate KRABIT?","type":"text"},{"id":"q2","title":"2. Country of incorporation","desc":"In which country is the KRABIT operating entity incorporated?","type":"text"},{"id":"q3","title":"3. Operating countries","desc":"Which countries will KRABIT initially operate in?","type":"text"},{"id":"q4","title":"4. Target users","desc":"Please confirm KRABIT's primary users (select all applicable):","type":"checkbox","options":["Freelancers","Remote workers","Digital service providers","Agencies","Small businesses"],"hasOther":true},{"id":"q5","title":"5. Client countries","desc":"Which countries will international clients primarily be paying from?","type":"text"},{"id":"q6","title":"6. Supported user countries","desc":"Which countries should users be permitted to register from?","type":"text"},{"id":"q7","title":"7. Supported currencies","desc":"Which currencies should KRABIT support at launch?","type":"text"},{"id":"q8","title":"8. KRABIT's primary value proposition","desc":"Which should be emphasized most strongly?","type":"radio","options":["International invoicing","International payment collection","Local payout","Multiple payment options","Escrow/protected payments","Freelancer financial management","All of the above"],"hasOther":true}]},{"num":2,"title":"SECTION 2 — USER ONBOARDING & KYC","note":"KRABIT will require an onboarding process before users can fully access payment and payout functionality.","items":[{"id":"q9","title":"9. KYC requirements","desc":"Which information should KRABIT collect? (Select all applicable):","type":"checkbox","options":["Full legal name","Date of birth","Phone number","Email","Residential address","Country","Government-issued ID","NIN","BVN","Selfie/liveness verification","Proof of address","Business information"],"hasOther":true},{"id":"q10","title":"10. BVN","desc":"Should Nigerian users be required to provide BVN?","type":"radio","options":["Yes","No","Only when required for payout/KYC","Not yet decided"]},{"id":"q11","title":"11. NIN","desc":"Should Nigerian users be required to provide NIN?","type":"radio","options":["Yes","No","Only when required for KYC","Not yet decided"]},{"id":"q12","title":"12. KYC verification provider","desc":"Does KRABIT already have a KYC/identity verification provider?","type":"radio","options":["Yes","No","We are currently evaluating providers"],"textExtra":"Provider (if applicable):"},{"id":"q13","title":"13. KYC approval","desc":"Who should ultimately approve a user's KYC?","type":"radio","options":["Automatically through the KYC provider","KRABIT compliance team","Automatic approval + manual review for flagged users"],"hasOther":true},{"id":"q14","title":"14. What happens when KYC fails?","desc":"Select default action:","type":"radio","options":["User can retry","User is manually reviewed","Account remains restricted","Account is rejected"],"hasOther":true},{"id":"q15","title":"15. When can a user receive payments?","desc":"Select threshold:","type":"radio","options":["Immediately after registration","After basic onboarding","After KYC approval","After KYC + bank account verification"],"hasOther":true},{"id":"q16","title":"16. When can a user request a payout?","desc":"Select condition:","type":"radio","options":["After KYC approval","After bank account verification","After funds become available"],"hasOther":true}]},{"num":3,"title":"SECTION 3 — STRIPE & AUTOMATED PAYMENTS","note":"Stripe will be the primary automated payment method in the initial version.","items":[{"id":"q17","title":"17. Existing Stripe account","desc":"Does KRABIT already have a Stripe account?","type":"radio","options":["Yes","No","In progress"]},{"id":"q18","title":"18. Stripe account ownership","desc":"Who owns the Stripe account?","type":"text","placeholder":"Legal entity/name"},{"id":"q19","title":"19. Stripe account country","desc":"Which country is the Stripe account registered in?","type":"text"},{"id":"q20","title":"20. Stripe Connect","desc":"Is KRABIT planning to use Stripe Connect?","type":"radio","options":["Yes","No","Not decided","We need technical/payment-provider guidance"]},{"id":"q21","title":"21. Freelancer Stripe accounts","desc":"Should KRABIT users be required to create their own Stripe accounts? (Current intended requirement: No)","type":"radio","options":["Confirmed — users should not create/manage individual Stripe accounts","Users may be required to complete payment-provider verification","Not yet decided"]},{"id":"q22","title":"22. Merchant of Record","desc":"Who will legally act as the Merchant of Record for payments made through KRABIT?","type":"text"},{"id":"q23","title":"23. Payment recipient","desc":"When an international client pays a KRABIT invoice, who legally receives the payment?","type":"radio","options":["KRABIT","Freelancer","Stripe connected account"],"hasOther":true},{"id":"q24","title":"24. Intended Stripe funds flow","desc":"Please describe the intended flow as currently understood (e.g. Client → KRABIT invoice → Stripe → KRABIT → Freelancer payout):","type":"textarea"},{"id":"q25","title":"25. Stripe fees","desc":"Who bears Stripe/payment-processing fees?","type":"radio","options":["KRABIT","Freelancer","Client","Shared","Deducted from transaction"],"hasOther":true}]},{"num":4,"title":"SECTION 4 — KRABIT FEES & PAYMENT ECONOMICS","items":[{"id":"q26","title":"26. KRABIT service fee","desc":"Please confirm: KRABIT service fee = 5%","type":"radio","options":["Confirmed","Change required"],"textExtra":"If different, specify:"},{"id":"q27","title":"27. Who pays the 5% KRABIT fee?","desc":"Select responsible party:","type":"radio","options":["Freelancer","Client","Freelancer or client can choose","KRABIT determines based on transaction"],"hasOther":true},{"id":"q28","title":"28. Example: $1,000 Invoice Breakdown","desc":"If a freelancer creates a $1,000 invoice, what should happen?","type":"grid4","fields":["Client pays ($)","KRABIT fee ($)","Stripe/processing fee ($)","Freelancer receives ($)"]},{"id":"q29","title":"29. Currency conversion","desc":"Who determines the exchange rate?","type":"radio","options":["KRABIT","Payment provider","Market rate","External FX provider"],"hasOther":true},{"id":"q30","title":"30. Exchange-rate model","desc":"Select model:","type":"radio","options":["Live/dynamic rate","KRABIT-defined rate","Fixed daily rate"],"hasOther":true},{"id":"q31","title":"31. Current exchange rate","desc":"If KRABIT will define its own rate, what rate should be used initially? (Example: $1 = ₦1,000)","type":"text","placeholder":"Confirmed rate..."},{"id":"q32","title":"32. Exchange-rate margin","desc":"Does KRABIT earn an additional margin from currency conversion?","type":"radio","options":["Yes","No","Not decided"],"textExtra":"If yes, specify margin % or spread:"}]},{"num":5,"title":"SECTION 5 — INVOICING","items":[{"id":"q33","title":"33. Invoice information","desc":"Please confirm that invoices should support all of the following fields:","type":"checkbox","options":["Client name","Client email","Client company","Client country","Invoice number","Invoice date","Due date","Currency","Services","Description","Quantity","Rate","Tax","KRABIT fee","Payment-processing fee","Total","Payment status","Payment link"],"defaultAllChecked":true},{"id":"q34","title":"34. Invoice actions","desc":"Users should be able to (select all applicable):","type":"checkbox","options":["Save draft","Preview","Edit","Send","Copy payment link","Download invoice","Download receipt","Resend invoice","Cancel invoice","Duplicate invoice"],"hasOther":true,"defaultAllChecked":true},{"id":"q35","title":"35. Automatic email","desc":"Should KRABIT automatically email the client when an invoice is sent?","type":"radio","options":["Yes","No"]},{"id":"q36","title":"36. Invoice reminders","desc":"Should KRABIT automatically remind clients about unpaid invoices?","type":"radio","options":["Yes","No","Yes, configurable by freelancer"]},{"id":"q37","title":"37. Recurring invoices","desc":"Should recurring invoices be part of the first version?","type":"radio","options":["Yes","No","Phase 2"]}]},{"num":6,"title":"SECTION 6 — WALLET & INTERNAL BALANCES","note":"Please confirm that KRABIT should distinguish between: Pending Balance, Escrow Balance, Available Balance, and Paid Out.","items":[{"id":"q38","title":"38. Pending period","desc":"How long should a normal payment remain pending?","type":"text"},{"id":"q39","title":"39. Previously discussed period","desc":"A period of approximately 5–7 days was mentioned. Please confirm:","type":"radio","options":["5 days","7 days","5–7 days depending on transaction"],"hasOther":true},{"id":"q40","title":"40. Who can release pending funds?","desc":"Select authorization level:","type":"radio","options":["Automatically after the waiting period","KRABIT operations team","Compliance team","Automatically unless flagged"],"hasOther":true},{"id":"q41","title":"41. Balance adjustments","desc":"Can administrators manually adjust balances?","type":"radio","options":["Yes","No"],"textExtra":"If yes, which admin roles?"}]},{"num":7,"title":"SECTION 7 — ESCROW","items":[{"id":"q42","title":"42. Escrow purpose","desc":"Please confirm intended model: 'Client funds are secured before work is completed and are released after the freelancer completes the work and the client approves it.'","type":"radio","options":["Confirmed","Requires modification"]},{"id":"q43","title":"43. Who can initiate escrow?","desc":"Select eligible roles:","type":"radio","options":["Freelancer","Client","Either","KRABIT"],"hasOther":true},{"id":"q44","title":"44. Escrow release","desc":"Who can release escrow funds?","type":"radio","options":["Client","Automatically after client approval","KRABIT","Combination of the above"],"hasOther":true},{"id":"q45","title":"45. Escrow waiting period","desc":"Is there a review period after escrow release?","type":"radio","options":["Yes","No"],"textExtra":"If yes, specify duration:"},{"id":"q46","title":"46. Partial release","desc":"Should KRABIT support partial escrow releases?","type":"radio","options":["Yes","No","Phase 2"]},{"id":"q47","title":"47. Escrow dispute","desc":"What happens when a dispute is opened?","type":"textarea"}]},{"num":8,"title":"SECTION 8 — DISPUTES & REFUNDS","items":[{"id":"q48","title":"48. Who can open a dispute?","desc":"Select eligible parties:","type":"radio","options":["Freelancer","Client","Both"]},{"id":"q49","title":"49. What can be disputed?","desc":"Select all applicable:","type":"checkbox","options":["Payment","Quality of work","Non-delivery","Amount","Refund"],"hasOther":true},{"id":"q50","title":"50. Who reviews disputes?","desc":"Select dispute review authority:","type":"radio","options":["KRABIT support","KRABIT operations","Dedicated dispute team"],"hasOther":true},{"id":"q51","title":"51. Possible dispute outcomes","desc":"Should administrators be able to perform (select all applicable):","type":"checkbox","options":["Release funds to freelancer","Refund client","Partially refund client","Partially release freelancer funds","Request additional evidence","Escalate dispute"],"defaultAllChecked":true},{"id":"q52","title":"52. Chargebacks","desc":"Who bears responsibility for payment-provider chargebacks?","type":"text"},{"id":"q53","title":"53. Refunds","desc":"Who bears the cost of refunds?","type":"text"}]},{"num":9,"title":"SECTION 9 — PAYOUTS","items":[{"id":"q54","title":"54. Payout destination","desc":"Please confirm that freelancers can withdraw to their local bank account:","type":"radio","options":["Confirmed"],"hasOther":true},{"id":"q55","title":"55. Bank information","desc":"What should users provide? (Select all applicable):","type":"checkbox","options":["Bank name","Account name","Account number","BVN","Bank verification"],"hasOther":true,"defaultAllChecked":true},{"id":"q56","title":"56. Supported banks","desc":"Select banking coverage:","type":"radio","options":["All supported Nigerian banks","Specific banks only","Other countries/banks also required"]},{"id":"q57","title":"57. Minimum payout","desc":"What is the minimum amount a user can withdraw?","type":"text"},{"id":"q58","title":"58. Payout fee","desc":"Will KRABIT charge a payout fee?","type":"radio","options":["No","Yes","Included in 5%","Separate fee"],"textExtra":"If yes, specify fee:"},{"id":"q59","title":"59. Payout processing time","desc":"Expected payout turnaround time:","type":"radio","options":["Instant","Same day","1 business day","1–3 business days"],"hasOther":true},{"id":"q60","title":"60. Failed payout","desc":"What should happen if a payout fails?","type":"textarea"}]},{"num":10,"title":"SECTION 10 — ASSISTED PAYMENT SERVICES","note":"The following methods will not be automated through the app initially and will be handled by KRABIT operations: PayPal, Cash App, Zelle, Venmo, Wise, Fiverr, Crypto, ACH, Wire transfer, Checks.","items":[{"id":"q61","title":"61. Confirm assisted model","desc":"Please confirm: 'Users request these payment methods through KRABIT, but actual processing is handled manually by a KRABIT representative.'","type":"radio","options":["Confirmed","Requires modification"]},{"id":"q62","title":"62. How should users contact KRABIT?","desc":"Select channels:","type":"checkbox","options":["Telegram","WhatsApp","In-app support","Email","Combination"],"defaultAllChecked":true},{"id":"q63","title":"63. Formal in-app request","desc":"Should users submit a formal request inside KRABIT?","type":"radio","options":["Yes","No"]},{"id":"q64","title":"64. Information required for assisted requests","desc":"What should users provide? (Select all applicable):","type":"checkbox","options":["Payment method","Amount","Currency","Client information","Invoice","Proof of payment","Transaction reference"],"hasOther":true,"defaultAllChecked":true},{"id":"q65","title":"65. Who handles assisted requests?","desc":"Responsible team/role:","type":"text"},{"id":"q66","title":"66. Assisted payment status","desc":"Should requests have statuses (Submitted, Assigned, Processing, Waiting for user, Waiting for payment, Completed, Failed, Cancelled, Disputed)?","type":"radio","options":["Yes","No"],"hasOther":true}]},{"num":11,"title":"SECTION 11 — USER DASHBOARD","items":[{"id":"q67","title":"67. Additional dashboard metrics","desc":"What else should users see beyond standard income & invoices?","type":"textarea"}]},{"num":12,"title":"SECTION 12 — CLIENT MANAGEMENT","items":[{"id":"q68","title":"68. Saved clients","desc":"Should freelancers be able to save client information?","type":"radio","options":["Yes","No"]},{"id":"q69","title":"69. Client history","desc":"Should freelancers see total paid, invoices count, active projects, and transaction history?","type":"radio","options":["Yes","No"]},{"id":"q70","title":"70. Recurring clients","desc":"Should users be able to quickly create invoices using saved client information?","type":"radio","options":["Yes","No"]}]},{"num":13,"title":"SECTION 13 — SERVICES","items":[{"id":"q71","title":"71. Freelancer services","desc":"Should freelancers be able to create reusable services (Service name, Description, Price, Currency, Tax, Duration)?","type":"radio","options":["Yes","No"]},{"id":"q72","title":"72. Invoice shortcut","desc":"Should users be able to select an existing service when creating an invoice?","type":"radio","options":["Yes","No"]}]},{"num":14,"title":"SECTION 14 — BUSINESS & PROFILE","items":[{"id":"q73","title":"73. Freelancer profile","desc":"Please confirm support for: First name, Last name, Profile photo, Country, Address, City, ZIP, Phone, Services, Professional info:","type":"radio","options":["Confirmed","Other (specify)"],"textExtra":"If other, specify:"},{"id":"q74","title":"74. Business profile","desc":"Should users be able to register business details?","type":"radio","options":["Yes","No"]},{"id":"q75","title":"75. Business information","desc":"What should be collected? (Select all applicable):","type":"checkbox","options":["Business name","Business type","Registration number","Country","Address","Tax information","Website"],"hasOther":true,"defaultAllChecked":true}]},{"num":15,"title":"SECTION 15 — LEGAL DOCUMENTS","items":[{"id":"q_legal_docs","title":"Legal documents list","desc":"Which documents should users accept/read? (Select all applicable):","type":"checkbox","options":["Terms of Use","Privacy Policy","Payment Agreement","Escrow Agreement","Freelancer Agreement","Partnership Agreement","Refund Policy","Dispute Policy","KYC/AML Policy"],"hasOther":true,"defaultAllChecked":true},{"id":"q76","title":"76. Agreement acceptance","desc":"Should users explicitly accept relevant agreements before activating payment collection?","type":"radio","options":["Yes","No"]},{"id":"q77","title":"77. Agreement records","desc":"Should KRABIT store agreement version, timestamp, user ID, IP/device info, and status?","type":"radio","options":["Yes","No"]}]},{"num":16,"title":"SECTION 16 — NOTIFICATIONS","items":[{"id":"q_notif_channels","title":"Notification channels","desc":"Which channels should KRABIT support? (Select all applicable):","type":"checkbox","options":["In-app notifications","Email","Telegram","WhatsApp","SMS"],"defaultAllChecked":true},{"id":"q78","title":"78. Notification events","desc":"Should users be notified about (select all applicable):","type":"checkbox","options":["Invoice sent","Invoice viewed","Payment received","Payment failed","Funds moved to pending","Funds released","Escrow update","Payout requested","Payout completed","Payout failed","Dispute opened","Dispute updated","KYC status","Assisted payment status","Security/login events"],"defaultAllChecked":true}]},{"num":17,"title":"SECTION 17 — ADMIN PLATFORM","note":"The KRABIT Admin Dashboard will be a separate administrative interface distinct from the freelancer dashboard.","items":[{"id":"q79","title":"79. Admin roles","desc":"Should KRABIT have multiple admin roles (Super Admin, Finance, Compliance, Support, Operations)?","type":"radio","options":["Yes","No"],"textExtra":"If yes, list specific roles required:"},{"id":"q80","title":"80. Admin financial controls","desc":"Which actions require elevated approval (Payout approval, Balance adjustment, Refund, Escrow release, Dispute resolution, Fee changes, Exchange-rate changes, User suspension, KYC override)?","type":"textarea"}]},{"num":18,"title":"SECTION 18 — SECURITY","items":[{"id":"q81","title":"81. Two-factor authentication (2FA)","desc":"Should KRABIT require 2FA?","type":"radio","options":["All users","Admins only","High-risk actions only","Optional","Not decided"]},{"id":"q82","title":"82. Sensitive information","desc":"Which sensitive information should KRABIT store vs NEVER store directly?","type":"textarea","placeholder":"Identify anything KRABIT should NOT store directly..."},{"id":"q83","title":"83. Login security","desc":"Should KRABIT support (select all applicable):","type":"checkbox","options":["Login alerts","Device/session management","Suspicious login detection","Account lockout","Rate limiting","Password reset"],"hasOther":true,"defaultAllChecked":true},{"id":"q84","title":"84. Transaction security","desc":"Should high-risk actions require additional verification?","type":"radio","options":["Yes","No","Not decided"]},{"id":"q85","title":"85. Security/compliance standards","desc":"Does KRABIT have any required security or compliance standards (e.g. PCI-DSS, NDPR, GDPR)?","type":"text"}]},{"num":19,"title":"SECTION 19 — SUPPORT & FEEDBACK","items":[{"id":"q86","title":"86. Support channels","desc":"How should users contact KRABIT?","type":"checkbox","options":["Telegram","WhatsApp","Email","In-app ticket","Combination"],"defaultAllChecked":true},{"id":"q87","title":"87. Telegram support bot","desc":"Should KRABIT have a Telegram support bot?","type":"radio","options":["Yes","No"]},{"id":"q88","title":"88. Feedback","desc":"Should users have a dedicated feedback feature?","type":"radio","options":["Yes","No"]},{"id":"q89","title":"89. Feedback visibility","desc":"Who should see feedback?","type":"radio","options":["Admin only","Support team","Product team"],"hasOther":true}]},{"num":20,"title":"SECTION 20 — REPORTING & ANALYTICS","items":[{"id":"q_reporting","title":"Reporting metrics","desc":"What should KRABIT administrators be able to report? (Select all applicable):","type":"checkbox","options":["Total transaction volume","KRABIT revenue","Payment volume","Payout volume","Pending funds","Escrow funds","Refunds","Chargebacks","Active users","New users","KYC approval rate","Failed payments","Assisted payment volume","Disputes"],"hasOther":true,"defaultAllChecked":true}]},{"num":21,"title":"SECTION 21 — MVP PRIORITY","items":[{"id":"q_mvp_must","title":"Must Have — Launch","desc":"Non-negotiable features for day 1 launch:","type":"textarea"},{"id":"q_mvp_should","title":"Should Have — Launch if feasible","desc":"Important features if timeline allows:","type":"textarea"},{"id":"q_mvp_phase2","title":"Phase 2","desc":"Features scheduled immediately post-launch:","type":"textarea"},{"id":"q_mvp_future","title":"Future","desc":"Longer-term roadmap considerations:","type":"textarea"}]},{"num":22,"title":"SECTION 22 — CLIENT-PROVIDED MATERIALS","items":[{"id":"q_client_materials","title":"Materials Provided to Dev Team","desc":"Please confirm which items KRABIT will provide to developer Erioluwa Daniel:","type":"checkbox","options":["Logo","Brand colors","Brand guidelines","Terms of Use","Privacy Policy","Escrow Agreement","Payment Agreement","KYC requirements","AML/compliance requirements","Stripe account","Stripe credentials","KYC provider credentials","Bank/payout provider","Exchange-rate rules","Support contact information","Telegram bot","Email service","Business registration information"],"hasOther":true,"defaultAllChecked":true}]},{"num":23,"title":"SECTION 23 — FINAL BUSINESS CONFIRMATION","note":"Please confirm the 16 core product directions:\n1. Freelancers create accounts.\n2. Onboarding & verification before financial functionality.\n3. Verified users create international invoices.\n4. International clients pay invoices.\n5. Stripe initial automated method.\n6. Other methods human-assisted.\n7. 5% service fee.\n8. Maintain ledger & transaction records.\n9. Separate pending, escrow and available balances.\n10. Payouts to local bank accounts.\n11. Disputes and escrow workflows.\n12. Saved clients and reusable services.\n13. Income tracking.\n14. Notifications and support.\n15. Separate admin platform for staff.\n16. Audit records for financial/admin actions.","items":[{"id":"q_final_16","title":"16 Core Directives Confirmation","desc":"Select confirmation status:","type":"radio","options":["Confirmed in full","Changes required"],"textExtra":"If changes required, describe:"}]},{"num":24,"title":"SECTION 24 — ADDITIONAL REQUIREMENTS","items":[{"id":"q_additional_reqs","title":"Additional Requirements","desc":"Is there anything discussed during previous meetings that is not covered in this questionnaire?","type":"textarea"}]}];
   document.getElementById('clientDate').valueAsDate = new Date();
 
-  const STORAGE_KEY = 'krabit_client_questionnaire_all24_v4';
-  const TIMESTAMP_KEY = 'krabit_last_saved_time_v4';
+  const STORAGE_KEY = 'krabit_client_questionnaire_all24_v5';
+  const TIMESTAMP_KEY = 'krabit_last_saved_time_v5';
   const form = document.getElementById('questionnaireForm');
 
   function updateSaveBadge(text, isSaving = false) {
@@ -2775,12 +2758,14 @@
     }
   }
 
-  // --- High-Fidelity Extraction of All 24 Sections ---
-  function extractAllAnswers() {
+  // --- High-Fidelity Extraction of All 24 Sections (Exact Questions + Descriptions + Answers) ---
+  function extractAllAnswersData() {
+    const detailedSections = [];
     const sections = {};
 
     SECTIONS_METADATA.forEach(sec => {
       const secAnswers = {};
+      const itemsList = [];
 
       sec.items.forEach(item => {
         let ansText = '';
@@ -2828,55 +2813,73 @@
           }
         }
 
-        secAnswers[item.title] = ansText ? ansText.trim() : '—';
+        const finalAns = ansText ? ansText.trim() : '—';
+        secAnswers[item.title] = finalAns;
+
+        itemsList.push({
+          id: item.id,
+          title: item.title,
+          desc: item.desc || '',
+          type: item.type,
+          options: item.options || [],
+          answer: finalAns
+        });
       });
 
       sections[sec.title] = secAnswers;
+      detailedSections.push({
+        num: sec.num,
+        title: sec.title,
+        note: sec.note || '',
+        items: itemsList
+      });
     });
 
-    return sections;
+    return { detailedSections, sections };
   }
 
-  // --- Clean Contract-Grade PDF Print Engine (Zero Form Bloat, 5-7 Pages) ---
+  // --- Clean Contract-Grade PDF Print Engine (Shows Question Title, Prompt, and Client Answer) ---
   function handlePrintDocument() {
     const clientName = document.getElementById('clientName').value || 'Unspecified Client';
     const company = document.getElementById('company').value || 'Unspecified Company';
     const signature = document.getElementById('clientSignature').value || clientName || 'Authorized';
     const subDate = document.getElementById('clientDate').value || new Date().toISOString().split('T')[0];
 
-    const sections = extractAllAnswers();
+    const { detailedSections } = extractAllAnswersData();
 
-    let tablesHtml = '';
-    for (const [secTitle, questions] of Object.entries(sections)) {
-      let rowsHtml = '';
-      for (const [qText, qAns] of Object.entries(questions)) {
-        rowsHtml += `
-          <tr>
-            <td style="width: 38%; font-weight: 600; color: #1e293b; background: #fafafa; border: 1px solid #cbd5e1; padding: 5px 8px; vertical-align: top;">${qText}</td>
-            <td style="width: 62%; color: #0f172a; border: 1px solid #cbd5e1; padding: 5px 8px; vertical-align: top;">${qAns || '—'}</td>
-          </tr>
+    let sectionsHtml = '';
+    detailedSections.forEach(sec => {
+      let questionsHtml = '';
+      sec.items.forEach(item => {
+        questionsHtml += `
+          <div style="margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0; page-break-inside: avoid;">
+            <div style="font-weight: 700; font-size: 9.5pt; color: #0f172a;">${item.title}</div>
+            ${item.desc ? `<div style="font-size: 8.5pt; color: #475569; margin: 1px 0 4px; line-height: 1.35;">${item.desc}</div>` : ''}
+            <div style="font-size: 9pt; color: #0f172a; background: #f8fafc; padding: 5px 8px; border-left: 3px solid #10b981; border-radius: 3px;">
+              <strong style="color: #047857; font-size: 8.5pt;">Client Answer:</strong> ${item.answer || '—'}
+            </div>
+          </div>
         `;
-      }
+      });
 
-      tablesHtml += `
+      sectionsHtml += `
         <div class="print-section" style="page-break-inside: avoid; margin-bottom: 18px;">
-          <h3 style="font-size: 11pt; font-weight: 700; color: #0f172a; margin: 12px 0 4px; border-bottom: 1.5px solid #059669; padding-bottom: 3px;">
-            ${secTitle}
+          <h3 style="font-size: 11pt; font-weight: 800; color: #0f172a; margin: 12px 0 6px; border-bottom: 2px solid #059669; padding-bottom: 3px;">
+            ${sec.title}
           </h3>
-          <table class="print-table" style="width: 100%; border-collapse: collapse; margin-top: 6px; font-size: 9pt;">
-            ${rowsHtml}
-          </table>
+          ${sec.note ? `<div style="font-size: 8pt; color: #475569; background: #f1f5f9; padding: 6px 8px; margin-bottom: 8px; border-left: 2px solid #94a3b8;">${sec.note.replace(/\n/g, '<br/>')}</div>` : ''}
+          ${questionsHtml}
         </div>
       `;
-    }
+    });
 
     const printContainer = document.getElementById('printableDocument');
     printContainer.innerHTML = `
       <div style="padding: 10px 0;">
-        <div style="border-bottom: 2px solid #0f172a; padding-bottom: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-end;">
+        <div style="border-bottom: 2px solid #0f172a; padding-bottom: 12px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: flex-end;">
           <div>
-            <h1 style="font-size: 18pt; font-weight: 800; margin: 0; color: #0f172a;">KRABIT — Product & Business Requirements</h1>
-            <p style="font-size: 9pt; color: #475569; margin: 4px 0 0;">Official Technical Architecture, Payment & Compliance Intake Document</p>
+            <h1 style="font-size: 17pt; font-weight: 800; margin: 0; color: #0f172a;">KRABIT — Product & Business Requirements</h1>
+            <p style="font-size: 8.5pt; color: #475569; margin: 3px 0 0;">Official Technical Architecture, Payment & Compliance Intake Document</p>
           </div>
           <div style="text-align: right; font-size: 8pt; color: #64748b;">
             <div>CONFIDENTIAL & BINDING</div>
@@ -2885,33 +2888,33 @@
         </div>
 
         <!-- Sign-Off Summary Box -->
-        <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px 14px; margin-bottom: 18px;">
-          <table style="width: 100%; border-collapse: collapse; font-size: 9pt;">
+        <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px 12px; margin-bottom: 16px;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 8.5pt;">
             <tr>
-              <td style="padding: 3px 6px; font-weight: 700; width: 20%; color: #475569;">Client Name:</td>
-              <td style="padding: 3px 6px; width: 30%; color: #0f172a; font-weight: 600;">${clientName}</td>
-              <td style="padding: 3px 6px; font-weight: 700; width: 20%; color: #475569;">Company / Entity:</td>
-              <td style="padding: 3px 6px; width: 30%; color: #0f172a; font-weight: 600;">${company}</td>
+              <td style="padding: 3px 4px; font-weight: 700; width: 22%; color: #475569;">Client Legal Name:</td>
+              <td style="padding: 3px 4px; width: 28%; color: #0f172a; font-weight: 600;">${clientName}</td>
+              <td style="padding: 3px 4px; font-weight: 700; width: 22%; color: #475569;">Company / Entity:</td>
+              <td style="padding: 3px 4px; width: 28%; color: #0f172a; font-weight: 600;">${company}</td>
             </tr>
             <tr>
-              <td style="padding: 3px 6px; font-weight: 700; color: #475569;">Authorized Signature:</td>
-              <td style="padding: 3px 6px; font-family: monospace; font-weight: 700; color: #0f172a;">${signature}</td>
-              <td style="padding: 3px 6px; font-weight: 700; color: #475569;">Approval Date:</td>
-              <td style="padding: 3px 6px; color: #0f172a;">${subDate}</td>
+              <td style="padding: 3px 4px; font-weight: 700; color: #475569;">Authorized Signature:</td>
+              <td style="padding: 3px 4px; font-family: monospace; font-weight: 700; color: #0f172a;">${signature}</td>
+              <td style="padding: 3px 4px; font-weight: 700; color: #475569;">Approval Date:</td>
+              <td style="padding: 3px 4px; color: #0f172a;">${subDate}</td>
             </tr>
             <tr>
-              <td style="padding: 3px 6px; font-weight: 700; color: #475569;">Lead Developer:</td>
-              <td style="padding: 3px 6px; color: #0f172a; font-weight: 600;">Erioluwa Daniel</td>
-              <td style="padding: 3px 6px; font-weight: 700; color: #475569;">Storage Guarantee:</td>
-              <td style="padding: 3px 6px; color: #059669; font-weight: 700;">Zero-Retention (Ephemeral)</td>
+              <td style="padding: 3px 4px; font-weight: 700; color: #475569;">Lead Developer:</td>
+              <td style="padding: 3px 4px; color: #0f172a; font-weight: 600;">Erioluwa Daniel</td>
+              <td style="padding: 3px 4px; font-weight: 700; color: #475569;">Storage Guarantee:</td>
+              <td style="padding: 3px 4px; color: #059669; font-weight: 700;">Zero-Retention (Ephemeral)</td>
             </tr>
           </table>
         </div>
 
-        <!-- Tables -->
-        ${tablesHtml}
+        <!-- All Sections & Questions -->
+        ${sectionsHtml}
 
-        <div style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #cbd5e1; text-align: center; font-size: 8pt; color: #64748b;">
+        <div style="margin-top: 16px; padding-top: 8px; border-top: 1px solid #cbd5e1; text-align: center; font-size: 8pt; color: #64748b;">
           KRABIT Specifications — Erioluwa Daniel (Lead Developer) — Confirmed via formal client intake.
         </div>
       </div>
@@ -2926,24 +2929,34 @@
     const company = document.getElementById('company').value || 'KRABIT';
     const signature = document.getElementById('clientSignature').value || clientName;
     const subDate = document.getElementById('clientDate').value || new Date().toISOString().split('T')[0];
-    const sections = extractAllAnswers();
+    const { detailedSections } = extractAllAnswersData();
 
     let sectionsContent = '';
-    for (const [secTitle, questions] of Object.entries(sections)) {
-      let rows = '';
-      for (const [qText, qAns] of Object.entries(questions)) {
-        rows += `
-          <tr>
-            <td style="padding: 8px 12px; border: 1px solid #e2e8f0; width: 38%; font-weight: 600; background: #f8fafc; color: #1e293b; vertical-align: top;">${qText}</td>
-            <td style="padding: 8px 12px; border: 1px solid #e2e8f0; width: 62%; color: #0f172a; vertical-align: top;">${qAns || '—'}</td>
-          </tr>`;
-      }
+    detailedSections.forEach(sec => {
+      let questionsHtml = '';
+      sec.items.forEach(item => {
+        questionsHtml += `
+          <div style="margin-bottom: 16px; padding: 12px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; border-left: 4px solid #10b981;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #0f172a; margin-bottom: 2px;">${item.title}</div>
+            ${item.desc ? `<div style="font-size: 12px; color: #475569; margin-bottom: 8px; line-height: 1.4;">${item.desc}</div>` : ''}
+            <div style="font-size: 11px; font-weight: 700; color: #047857; text-transform: uppercase; margin-bottom: 2px;">Client Answer:</div>
+            <div style="font-size: 13px; font-weight: 600; color: #0f172a; background: #ffffff; padding: 8px 12px; border-radius: 6px; border: 1px solid #e2e8f0;">${item.answer || '—'}</div>
+          </div>
+        `;
+      });
+
       sectionsContent += `
-        <div style="margin-bottom: 24px; page-break-inside: avoid;">
-          <h3 style="font-size: 14px; font-weight: 700; color: #065f46; margin: 0 0 8px; border-bottom: 2px solid #10b981; padding-bottom: 4px;">${secTitle}</h3>
-          <table style="width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.5;">${rows}</table>
-        </div>`;
-    }
+        <div style="margin-bottom: 26px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden;">
+          <div style="background: #0f172a; color: #ffffff; padding: 12px 18px; font-size: 14px; font-weight: 800;">
+            ${sec.title}
+          </div>
+          ${sec.note ? `<div style="background: #f1f5f9; padding: 10px 18px; font-size: 12px; color: #334155; border-bottom: 1px solid #e2e8f0;"><strong>Directives:</strong><br/>${sec.note.replace(/\n/g, '<br/>')}</div>` : ''}
+          <div style="padding: 16px 18px 4px;">
+            ${questionsHtml}
+          </div>
+        </div>
+      `;
+    });
 
     const standaloneHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -2951,8 +2964,8 @@
   <meta charset="UTF-8">
   <title>KRABIT — Requirements Specification Document (${clientName})</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; margin: 0; padding: 32px 16px; color: #1e293b; }
-    .doc-container { max-width: 900px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #cbd5e1; padding: 36px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f1f5f9; margin: 0; padding: 24px 16px; color: #1e293b; }
+    .doc-container { max-width: 860px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #cbd5e1; padding: 28px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
     @media print {
       body { background: #fff; padding: 0; }
       .doc-container { border: none; box-shadow: none; padding: 0; }
@@ -2961,11 +2974,11 @@
 </head>
 <body>
   <div class="doc-container">
-    <div style="border-bottom: 3px solid #0f172a; padding-bottom: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end;">
+    <div style="border-bottom: 3px solid #10b981; padding-bottom: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end;">
       <div>
         <span style="font-size: 11px; font-weight: 800; color: #059669; text-transform: uppercase; letter-spacing: 1px;">Official Specifications</span>
         <h1 style="font-size: 24px; font-weight: 800; margin: 4px 0 0; color: #0f172a;">KRABIT — Requirements Specification</h1>
-        <p style="font-size: 12px; color: #64748b; margin: 4px 0 0;">Technical, Operational, Payment & KYC Product Architecture</p>
+        <p style="font-size: 12px; color: #64748b; margin: 4px 0 0;">Complete Technical, Payment, Compliance & Product Specification Intake</p>
       </div>
       <div style="text-align: right; font-size: 11px; color: #64748b;">
         <div><strong>Status:</strong> Client Approved</div>
@@ -2973,7 +2986,7 @@
       </div>
     </div>
 
-    <div style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px 18px; margin-bottom: 24px; font-size: 12px;">
+    <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px 18px; margin-bottom: 24px; font-size: 12px;">
       <table style="width: 100%; border-collapse: collapse;">
         <tr>
           <td style="padding: 4px 0; color: #64748b; width: 25%;">Client Representative:</td>
@@ -3079,7 +3092,7 @@
 
     saveFormData();
     updateProgress();
-    alert('⚡ Demo data populated across all 24 sections! You can now scroll down and click "Transmit Formal Requirements Document" to test email delivery.');
+    alert('⚡ Demo data populated across all 24 sections! You can now test Print/PDF, Download, or scroll down and click "Transmit Formal Requirements Document" to test email delivery.');
   }
 
   async function handleFormSubmit(e) {
@@ -3093,13 +3106,14 @@
     const signature = document.getElementById('clientSignature').value;
     const submissionDate = document.getElementById('clientDate').value;
 
-    const sections = extractAllAnswers();
+    const { detailedSections, sections } = extractAllAnswersData();
 
     const payload = {
       clientName,
       company,
       signature,
       submissionDate,
+      detailedSections,
       sections
     };
 

@@ -27,6 +27,7 @@ export default async function handler(req, res) {
       company = 'Unspecified Company',
       signature = '',
       submissionDate = new Date().toUTCString(),
+      detailedSections = null,
       sections = {},
       additionalNotes = ''
     } = payload || {};
@@ -42,7 +43,6 @@ export default async function handler(req, res) {
     let totalQuestions = 0;
     let answeredQuestions = 0;
 
-    // Build structured executive HTML email & Markdown document
     let sectionsHtml = '';
     let markdownDoc = `# KRABIT — Product & Business Requirements Specification\n\n`;
     markdownDoc += `**Client Legal Name:** ${clientName}\n`;
@@ -53,46 +53,100 @@ export default async function handler(req, res) {
     markdownDoc += `**Data Storage Retention:** Zero-Retention (Dispatched strictly in transient RAM)\n\n`;
     markdownDoc += `---\n\n`;
 
-    for (const [secTitle, questions] of Object.entries(sections)) {
-      if (!questions || Object.keys(questions).length === 0) continue;
+    // Process detailedSections (includes question title, full question description/prompt, and answer)
+    if (Array.isArray(detailedSections) && detailedSections.length > 0) {
+      for (const sec of detailedSections) {
+        if (!sec.items || sec.items.length === 0) continue;
 
-      markdownDoc += `## ${secTitle}\n\n`;
+        markdownDoc += `## ${sec.title}\n\n`;
+        if (sec.note) {
+          markdownDoc += `> **Directives:**\n> ${sec.note.replace(/\n/g, '\n> ')}\n\n`;
+        }
 
-      let questionsHtml = '';
-      for (const [qText, qAns] of Object.entries(questions)) {
-        totalQuestions++;
-        const isAnswered = qAns && qAns !== '—' && qAns !== 'Not specified';
-        if (isAnswered) answeredQuestions++;
+        let questionsHtml = '';
+        for (const item of sec.items) {
+          totalQuestions++;
+          const isAnswered = item.answer && item.answer !== '—' && item.answer !== 'Not specified';
+          if (isAnswered) answeredQuestions++;
 
-        const formattedAns = Array.isArray(qAns) 
-          ? (qAns.length > 0 ? qAns.join(', ') : '<em>None selected</em>')
-          : (qAns && qAns !== '—' ? String(qAns).replace(/\n/g, '<br/>') : '<em style="color:#94a3b8;">Not specified / Skipped</em>');
+          const formattedAns = Array.isArray(item.answer) 
+            ? (item.answer.length > 0 ? item.answer.join(', ') : '<em>None selected</em>')
+            : (item.answer && item.answer !== '—' ? String(item.answer).replace(/\n/g, '<br/>') : '<em style="color:#94a3b8;">Not specified / Skipped</em>');
 
-        const mdAns = Array.isArray(qAns) ? qAns.join(', ') : (qAns || '—');
-        markdownDoc += `### ${qText}\n${mdAns}\n\n`;
+          const mdAns = Array.isArray(item.answer) ? item.answer.join(', ') : (item.answer || '—');
+          markdownDoc += `### ${item.title}\n\n${item.desc || ''}\n\n**Answer:** ${mdAns}\n\n`;
 
-        questionsHtml += `
-          <div style="margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #f1f5f9;">
-            <div style="font-size: 13px; font-weight: 600; color: #1e293b; margin-bottom: 4px;">
-              ${qText}
+          questionsHtml += `
+            <div style="margin-bottom: 16px; padding: 14px 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; border-left: 4px solid ${isAnswered ? '#10b981' : '#cbd5e1'};">
+              <div style="font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 3px;">
+                ${item.title}
+              </div>
+              ${item.desc ? `<div style="font-size: 12.5px; color: #475569; margin-bottom: 8px; line-height: 1.4;">${item.desc}</div>` : ''}
+              <div style="font-size: 11px; font-weight: 700; color: #059669; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">
+                Client Answer:
+              </div>
+              <div style="font-size: 13.5px; color: #0f172a; font-weight: 600; line-height: 1.5; background: #ffffff; padding: 8px 12px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                ${formattedAns}
+              </div>
             </div>
-            <div style="font-size: 14px; color: #0f172a; background: #f8fafc; padding: 10px 14px; border-radius: 6px; border-left: 3px solid ${isAnswered ? '#10b981' : '#cbd5e1'}; line-height: 1.5;">
-              ${formattedAns}
+          `;
+        }
+
+        sectionsHtml += `
+          <div style="margin-bottom: 28px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+            <div style="background: #0f172a; color: #ffffff; padding: 14px 20px; font-size: 14px; font-weight: 800; letter-spacing: 0.5px;">
+              ${sec.title}
+            </div>
+            ${sec.note ? `<div style="background: #f1f5f9; padding: 10px 20px; font-size: 12px; color: #334155; border-bottom: 1px solid #e2e8f0; line-height: 1.4;"><strong>Section Directives:</strong><br/>${sec.note.replace(/\n/g, '<br/>')}</div>` : ''}
+            <div style="padding: 18px 20px 6px;">
+              ${questionsHtml}
             </div>
           </div>
         `;
       }
+    } else {
+      // Fallback if detailedSections was not passed
+      for (const [secTitle, questions] of Object.entries(sections)) {
+        if (!questions || Object.keys(questions).length === 0) continue;
 
-      sectionsHtml += `
-        <div style="margin-bottom: 28px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
-          <div style="background: #0f172a; color: #ffffff; padding: 12px 18px; font-size: 14px; font-weight: 700; letter-spacing: 0.5px;">
-            ${secTitle}
+        markdownDoc += `## ${secTitle}\n\n`;
+
+        let questionsHtml = '';
+        for (const [qText, qAns] of Object.entries(questions)) {
+          totalQuestions++;
+          const isAnswered = qAns && qAns !== '—' && qAns !== 'Not specified';
+          if (isAnswered) answeredQuestions++;
+
+          const formattedAns = Array.isArray(qAns) 
+            ? (qAns.length > 0 ? qAns.join(', ') : '<em>None selected</em>')
+            : (qAns && qAns !== '—' ? String(qAns).replace(/\n/g, '<br/>') : '<em style="color:#94a3b8;">Not specified / Skipped</em>');
+
+          const mdAns = Array.isArray(qAns) ? qAns.join(', ') : (qAns || '—');
+          markdownDoc += `### ${qText}\n\n**Answer:** ${mdAns}\n\n`;
+
+          questionsHtml += `
+            <div style="margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #f1f5f9;">
+              <div style="font-size: 13px; font-weight: 700; color: #1e293b; margin-bottom: 4px;">
+                ${qText}
+              </div>
+              <div style="font-size: 14px; color: #0f172a; background: #f8fafc; padding: 10px 14px; border-radius: 6px; border-left: 3px solid ${isAnswered ? '#10b981' : '#cbd5e1'}; line-height: 1.5;">
+                <strong>Answer:</strong> ${formattedAns}
+              </div>
+            </div>
+          `;
+        }
+
+        sectionsHtml += `
+          <div style="margin-bottom: 28px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+            <div style="background: #0f172a; color: #ffffff; padding: 12px 18px; font-size: 14px; font-weight: 700; letter-spacing: 0.5px;">
+              ${secTitle}
+            </div>
+            <div style="padding: 16px 18px;">
+              ${questionsHtml}
+            </div>
           </div>
-          <div style="padding: 16px 18px;">
-            ${questionsHtml}
-          </div>
-        </div>
-      `;
+        `;
+      }
     }
 
     const htmlEmail = `
@@ -103,7 +157,7 @@ export default async function handler(req, res) {
         <title>KRABIT Specification Document</title>
       </head>
       <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f1f5f9; margin: 0; padding: 24px; color: #334155;">
-        <div style="max-width: 840px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        <div style="max-width: 860px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
           
           <!-- Header -->
           <div style="background: #0b0f19; padding: 32px 28px; border-bottom: 3px solid #10b981;">
@@ -112,7 +166,7 @@ export default async function handler(req, res) {
               KRABIT — Product & Business Requirements
             </h1>
             <p style="color: #94a3b8; font-size: 14px; margin: 0;">
-              Formal client questionnaire intake document for technical architecture, development budget, and implementation.
+              Formal client questionnaire intake document with full questions, descriptions, and client answers.
             </p>
           </div>
 
@@ -138,7 +192,7 @@ export default async function handler(req, res) {
                 <td style="padding: 6px 0; color: #059669; font-weight: 700;">Zero-Database (Ephemeral)</td>
               </tr>
               <tr>
-                <td style="padding: 6px 0; color: #64748b;">Completed Items:</td>
+                <td style="padding: 6px 0; color: #64748b;">Completed Questions:</td>
                 <td style="padding: 6px 0; color: #0f172a; font-weight: 600;">${answeredQuestions} / ${totalQuestions} answered</td>
                 <td style="padding: 6px 0; color: #64748b;">Attachments:</td>
                 <td style="padding: 6px 0; color: #0284c7; font-weight: 600;">HTML & Markdown Included</td>
