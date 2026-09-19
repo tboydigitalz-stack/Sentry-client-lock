@@ -36,6 +36,8 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'RESEND_API_KEY environment variable is not configured in Vercel settings.' });
     }
 
+    const RECIPIENT_EMAIL = process.env.DEVELOPER_EMAIL || 'dan17buck@gmail.com';
+
     // Build structured executive HTML email
     let sectionsHtml = '';
     for (const [secTitle, questions] of Object.entries(sections)) {
@@ -141,9 +143,6 @@ export default async function handler(req, res) {
       </body>
       </html>
     `;
-
-    // Primary recipient matches the verified Resend account email for the default onboarding@resend.dev domain
-    const RECIPIENT_EMAIL = process.env.DEVELOPER_EMAIL || 'dan17buck@gmail.com';
 
     const resendResponse = await fetch('https://api.resend.com/emails', {
       method: 'POST',

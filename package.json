@@ -2,6 +2,7 @@
   "name": "krabit-requirements-questionnaire",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "KRABIT Product & Business Requirements Questionnaire with Zero-Database In-Memory Email Dispatch",
   "scripts": {
     "start": "npx serve ."
