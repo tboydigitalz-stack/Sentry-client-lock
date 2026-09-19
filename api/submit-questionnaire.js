@@ -38,23 +38,45 @@ export default async function handler(req, res) {
 
     const RECIPIENT_EMAIL = process.env.DEVELOPER_EMAIL || 'dan17buck@gmail.com';
 
-    // Build structured executive HTML email
+    // Count answers for summary
+    let totalQuestions = 0;
+    let answeredQuestions = 0;
+
+    // Build structured executive HTML email & Markdown document
     let sectionsHtml = '';
+    let markdownDoc = `# KRABIT — Product & Business Requirements Specification\n\n`;
+    markdownDoc += `**Client Legal Name:** ${clientName}\n`;
+    markdownDoc += `**Company / Entity:** ${company}\n`;
+    markdownDoc += `**Digital Signature:** ${signature || clientName}\n`;
+    markdownDoc += `**Submission Date:** ${submissionDate}\n`;
+    markdownDoc += `**Lead Developer:** Erioluwa Daniel\n`;
+    markdownDoc += `**Data Storage Retention:** Zero-Retention (Dispatched strictly in transient RAM)\n\n`;
+    markdownDoc += `---\n\n`;
+
     for (const [secTitle, questions] of Object.entries(sections)) {
       if (!questions || Object.keys(questions).length === 0) continue;
 
+      markdownDoc += `## ${secTitle}\n\n`;
+
       let questionsHtml = '';
       for (const [qText, qAns] of Object.entries(questions)) {
+        totalQuestions++;
+        const isAnswered = qAns && qAns !== '—' && qAns !== 'Not specified';
+        if (isAnswered) answeredQuestions++;
+
         const formattedAns = Array.isArray(qAns) 
           ? (qAns.length > 0 ? qAns.join(', ') : '<em>None selected</em>')
-          : (qAns ? String(qAns).replace(/\n/g, '<br/>') : '<em>Not specified</em>');
+          : (qAns && qAns !== '—' ? String(qAns).replace(/\n/g, '<br/>') : '<em style="color:#94a3b8;">Not specified / Skipped</em>');
+
+        const mdAns = Array.isArray(qAns) ? qAns.join(', ') : (qAns || '—');
+        markdownDoc += `### ${qText}\n${mdAns}\n\n`;
 
         questionsHtml += `
           <div style="margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #f1f5f9;">
             <div style="font-size: 13px; font-weight: 600; color: #1e293b; margin-bottom: 4px;">
               ${qText}
             </div>
-            <div style="font-size: 14px; color: #0f172a; background: #f8fafc; padding: 10px 14px; border-radius: 6px; border-left: 3px solid #0284c7; line-height: 1.5;">
+            <div style="font-size: 14px; color: #0f172a; background: #f8fafc; padding: 10px 14px; border-radius: 6px; border-left: 3px solid ${isAnswered ? '#10b981' : '#cbd5e1'}; line-height: 1.5;">
               ${formattedAns}
             </div>
           </div>
@@ -81,7 +103,7 @@ export default async function handler(req, res) {
         <title>KRABIT Specification Document</title>
       </head>
       <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f1f5f9; margin: 0; padding: 24px; color: #334155;">
-        <div style="max-width: 820px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        <div style="max-width: 840px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
           
           <!-- Header -->
           <div style="background: #0b0f19; padding: 32px 28px; border-bottom: 3px solid #10b981;">
@@ -90,7 +112,7 @@ export default async function handler(req, res) {
               KRABIT — Product & Business Requirements
             </h1>
             <p style="color: #94a3b8; font-size: 14px; margin: 0;">
-              Submitted by client for technical architecture, product specifications, and development execution.
+              Formal client questionnaire intake document for technical architecture, development budget, and implementation.
             </p>
           </div>
 
@@ -115,6 +137,12 @@ export default async function handler(req, res) {
                 <td style="padding: 6px 0; color: #64748b;">Storage Retention:</td>
                 <td style="padding: 6px 0; color: #059669; font-weight: 700;">Zero-Database (Ephemeral)</td>
               </tr>
+              <tr>
+                <td style="padding: 6px 0; color: #64748b;">Completed Items:</td>
+                <td style="padding: 6px 0; color: #0f172a; font-weight: 600;">${answeredQuestions} / ${totalQuestions} answered</td>
+                <td style="padding: 6px 0; color: #64748b;">Attachments:</td>
+                <td style="padding: 6px 0; color: #0284c7; font-weight: 600;">HTML & Markdown Included</td>
+              </tr>
             </table>
           </div>
 
@@ -133,7 +161,7 @@ export default async function handler(req, res) {
           <!-- Footer -->
           <div style="background: #f8fafc; padding: 20px 28px; text-align: center; border-top: 1px solid #e2e8f0; font-size: 12px; color: #64748b;">
             <p style="margin: 0 0 6px;">
-              Sent to <strong>${RECIPIENT_EMAIL}</strong> via Resend automated document delivery.
+              Delivered to <strong>${RECIPIENT_EMAIL}</strong> via automated specification dispatch.
             </p>
             <p style="margin: 0; color: #94a3b8; font-size: 11px;">
               Privacy Guarantee: This document was processed strictly in transient server memory and was never written to any database disk.
@@ -143,6 +171,19 @@ export default async function handler(req, res) {
       </body>
       </html>
     `;
+
+    // Prepare attachments: both an offline-viewable standalone HTML report and a Markdown document
+    const sanitizedClient = (clientName || 'Client').replace(/[^a-zA-Z0-9_-]/g, '_');
+    const attachments = [
+      {
+        filename: `KRABIT_Requirements_Specification_${sanitizedClient}.html`,
+        content: Buffer.from(htmlEmail).toString('base64')
+      },
+      {
+        filename: `KRABIT_Requirements_Specification_${sanitizedClient}.md`,
+        content: Buffer.from(markdownDoc).toString('base64')
+      }
+    ];
 
     const resendResponse = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -154,7 +195,8 @@ export default async function handler(req, res) {
         from: 'KRABIT Requirements <onboarding@resend.dev>',
         to: [RECIPIENT_EMAIL],
         subject: `[KRABIT SPECIFICATION] Submission Received: ${clientName} (${company})`,
-        html: htmlEmail
+        html: htmlEmail,
+        attachments: attachments
       })
     });
 
@@ -164,7 +206,7 @@ export default async function handler(req, res) {
       console.error('Resend API error:', resendData);
       return res.status(500).json({
         error: 'Failed to deliver automated email document.',
-        details: resendData
+        details: resendData.message || JSON.stringify(resendData)
       });
     }
 
@@ -172,7 +214,9 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       message: 'Questionnaire processed and delivered directly to Erioluwa Daniel with zero database retention.',
-      deliveryId: resendData.id
+      deliveryId: resendData.id,
+      answeredCount: answeredQuestions,
+      totalCount: totalQuestions
     });
 
   } catch (err) {
