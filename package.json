@@ -1,0 +1,11 @@
+{
+  "name": "krabit-requirements-questionnaire",
+  "version": "1.0.0",
+  "private": true,
+  "description": "KRABIT Product & Business Requirements Questionnaire with Zero-Database In-Memory Email Dispatch",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": ["krabit", "questionnaire", "resend", "vercel"],
+  "author": "Erioluwa Daniel"
+}
